@@ -114,8 +114,9 @@ Adjust defaults in `rag_pipeline/config.py` or by passing args into `build_pipel
 
 ### Streamlit demo app (chatbot UI)
 Live demo: https://ash-advanced-rag-pipeline.streamlit.app/
-1. Install deps (as above) and ensure `.env` has `GROQ_API_KEY`.
-2. Launch:
+
+1. Install deps (as above) and ensure `.env` has `GROQ_API_KEY` if running locally.
+2. Launch locally:
    ```bash
    streamlit run app.py
    ```

@@ -93,24 +93,33 @@ Adjust defaults in `rag_pipeline/config.py` or by passing args into `build_pipel
 
 ---
 
+
 ## How to Run
 1. **Install dependencies** (preferably in a virtualenv):
    ```bash
    pip install -r requirements.txt
    ```
+   If you see `ModuleNotFoundError: langchain_core`, ensure the install completed or run `pip install langchain-core`.
 2. **Set your Groq key** in `.env`:
    ```
    GROQ_API_KEY=your_key_here
    ```
 3. **Add documents** under `data/` (any mix of pdf/txt/md/csv/sql).
-4. **Run the pipeline**:
+4. **Run the pipeline (CLI example)**:
    ```bash
    python main.py
    ```
    - On each run, new files are added, removed files are deleted from the vector store, and existing entries are reused.
-   - The script asks the question in `RAG_QUESTION` (env) or defaults to *“What is CNN training procedure described under Unsupervised Domain Adaptation?”*.
+   - The script asks the question in `RAG_QUESTION` (env) or defaults to *?What is CNN training procedure described under Unsupervised Domain Adaptation??*.
 
----
+### Streamlit demo app (chatbot UI)
+1. Install deps (as above) and ensure `.env` has `GROQ_API_KEY`.
+2. Launch:
+   ```bash
+   streamlit run app.py
+   ```
+3. In the sidebar, upload or delete documents (pdf/txt/md/csv/sql) and optionally click **Rebuild index**. The app syncs the vector store to reflect additions/removals.
+4. Use the chat box to ask questions. Answers include sources; chat history stays on the page. Streaming is handled by the pipeline?s generate call (non-streaming in UI for simplicity).
 
 ## Notes & Customization
 - **Refreshing embeddings for changed files:** The current sync detects added/removed files by name. If file contents change but names don’t, delete `data/vector_store/` or change the `collection_name` to rebuild.

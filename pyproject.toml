@@ -1,0 +1,22 @@
+[project]
+name = "rag-sample"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "chromadb>=1.4.0",
+    "faiss-cpu>=1.13.2",
+    "ipykernel>=7.1.0",
+    "langchain>=1.2.0",
+    "langchain-community>=0.4.1",
+    "langchain-core>=1.2.6",
+    "langchain-groq>=1.1.1",
+    "matplotlib>=3.10.8",
+    "numpy>=2.4.0",
+    "pandas>=2.3.3",
+    "pymupdf>=1.26.7",
+    "pypdf>=6.5.0",
+    "python-dotenv>=1.2.1",
+    "sentence-transformers>=5.2.0",
+]

@@ -113,6 +113,7 @@ Adjust defaults in `rag_pipeline/config.py` or by passing args into `build_pipel
    - The script asks the question in `RAG_QUESTION` (env) or defaults to *?What is CNN training procedure described under Unsupervised Domain Adaptation??*.
 
 ### Streamlit demo app (chatbot UI)
+Live demo: https://ash-advanced-rag-pipeline.streamlit.app/
 1. Install deps (as above) and ensure `.env` has `GROQ_API_KEY`.
 2. Launch:
    ```bash

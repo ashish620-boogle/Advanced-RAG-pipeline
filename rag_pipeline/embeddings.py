@@ -11,7 +11,7 @@ class EmbeddingManager:
 
     def _load_model(self) -> None:
         print(f"Loading embedding model: {self.model_name}")
-        self.model = SentenceTransformer(self.model_name)
+        self.model = SentenceTransformer(self.model_name, device="cpu")
         print(f"Model loaded. Dimension: {self.model.get_sentence_embedding_dimension()}")
 
     def generate_embeddings(self, texts: List[str]) -> np.ndarray:

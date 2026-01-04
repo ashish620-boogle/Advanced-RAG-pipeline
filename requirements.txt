@@ -6,9 +6,10 @@ langchain-core
 langchain-community
 pypdf
 pymupdf
-sentence_transformers
 faiss-cpu
 chromadb
 langchain-groq
 python-dotenv
 streamlit
+sentence-transformers==2.2.2
+torch==2.2.2

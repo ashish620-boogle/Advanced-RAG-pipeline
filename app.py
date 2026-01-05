@@ -1,5 +1,6 @@
 
 import os
+import re
 import time
 from pathlib import Path
 from typing import Iterable
@@ -92,6 +93,12 @@ def save_uploaded_files(files) -> list[Path]:
         saved.append(target)
     return saved
 
+def parse_think_blocks(text: str):
+    pattern = re.compile(r"<think>(.*?)</think>", re.DOTALL | re.IGNORECASE)
+    think_blocks = pattern.findall(text or "")
+    visible = pattern.sub("", text or "").strip()
+    return visible, think_blocks
+
 
 def delete_files(paths: list[Path]) -> None:
     for path in paths:
@@ -148,15 +155,23 @@ def main() -> None:
         st.warning("No documents available. Upload supported files to get started.")
         return
 
+    show_think = st.checkbox("Reasoning", value=False, key="show_think_toggle")
+
     st.divider()
     st.subheader("Chat")
     for turn in st.session_state["chat_history"]:
         with st.chat_message("user"):
             st.markdown(turn["question"])
+        visible_answer, think_blocks = parse_think_blocks(turn["answer"])
         with st.chat_message("assistant"):
-            st.markdown(turn["answer"])
+            st.markdown(visible_answer or turn["answer"])
             if turn.get("sources"):
                 st.caption("Sources: " + "; ".join(f"{s['source']}" for s in turn["sources"]))
+            if show_think and think_blocks:
+                with st.expander("Reasoning"):
+                    for i, blk in enumerate(think_blocks, 1):
+                        st.markdown(f"**Block {i}:**\n\n{blk}")
+
 
     prompt = st.chat_input("Ask a question about your documents")
     if prompt:
@@ -165,9 +180,15 @@ def main() -> None:
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
                 result = pipeline.generate(prompt, score_threshold=DEFAULT_SCORE_THRESHOLD, return_context=False)
-            st.markdown(result["answer"])
+            visible_answer, think_blocks = parse_think_blocks(result["answer"])
+            st.markdown(visible_answer or result["answer"])
             if result.get("sources"):
                 st.caption("Sources: " + "; ".join(f"{s['source']}" for s in result["sources"]))
+            if show_think and think_blocks:
+                with st.expander("Show reasoning"):
+                    for i, blk in enumerate(think_blocks, 1):
+                        st.markdown(f"**Block {i}:**\n\n{blk}")
+
         st.session_state["chat_history"].append(
             {
                 "question": prompt,
